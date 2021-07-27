@@ -6,27 +6,22 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Validator;
 
 class PokemonController extends Controller
 {
+    const DEFAULT_PAGE = 1;
+    const DEFAULT_PAGE_SIZE = 10;
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
     {
         //
     }
@@ -48,31 +43,53 @@ class PokemonController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($name)
+    public function show($name, Request $request)
     {
-        $pokemonAPI = new Client(['base_uri' => env('POKEMONTCG_API_BASE_URL')]);
+        $req = [
+            'name' => $name,
+            'page' => $request['page'],
+            'pageSize' => $request['pageSize'],
+        ];
 
-        $response = $pokemonAPI->request(
-            'GET',
-            'v2/cards',
-            [
-                'query' => [
-                    'q' => 'name:' . $name,
-                ]
-            ]
-        );
+        $validator = Validator::make($req, [
+            'page' => 'required|integer',
+            'pageSize' => 'integer',
+        ]);
 
-        $resultPokemon = json_decode($response->getBody()->getContents());
+        try {
+            if ($validator->fails()) {
+                return response()->json(['error_msg' => 'bad_request', 'error' => $validator->errors()], 422);
+            } else {
+                $pokemonAPI = new Client(['base_uri' => env('POKEMONTCG_API_BASE_URL')]);
 
-        $result = array();
-        foreach ($resultPokemon->data as $pokemon) {
-            $result[] = [
-                'name' => $pokemon->name,
-                'images' => $pokemon->images,
-            ];
+                $response = $pokemonAPI->request(
+                    'GET',
+                    'v2/cards',
+                    [
+                        'query' => [
+                            'q' => 'name:' . $name,
+                            'page' => ($request->has('page') && $request->get('page') > 0) ? $request->get('page') : self::DEFAULT_PAGE,
+                            'pageSize' => ($request->has('pageSize') && $request->get('pageSize') > 0) ? $request->get('pageSize') : self::DEFAULT_PAGE_SIZE,
+                        ]
+                    ]
+                );
+
+                $resultPokemon = json_decode($response->getBody()->getContents());
+
+                $result = array();
+                foreach ($resultPokemon->data as $pokemon) {
+                    $result[] = [
+                        'id' => $pokemon->id,
+                        'name' => $pokemon->name,
+                        'images' => $pokemon->images,
+                    ];
+                }
+
+                return response()->json($result);
+            }
+        } catch (Exception $ex) {
+            return response()->json(['error_msg' => 'server_error'], 500);
         }
-
-        return response()->json($result);
     }
 
     /**
