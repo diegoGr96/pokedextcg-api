@@ -3,4 +3,11 @@
 Homestead.yaml
 Homestead.json
 .env
-/config
+/config/app.php
+/config/broadcasting.php
+/config/database.php
+/config/filesystems.php
+/config/jwt.php
+/config/mail.php
+/config/queue.php
+/config/services.php
