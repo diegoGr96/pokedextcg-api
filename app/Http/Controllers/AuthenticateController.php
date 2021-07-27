@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthenticateController extends Controller
@@ -29,6 +30,8 @@ class AuthenticateController extends Controller
         $response = [
             'token' => $token,
             'user' => Auth::user(),
+            'user2' => DB::table('users')->select('id', 'name', 'email', 'created_at', 'updated_at')->where('email', $credentials['email'])->take(1)->get()[0],
+            'user3' => DB::select('select id, name, email, created_at, updated_at from users where email = :email limit 1', ['email' => $credentials['email']])[0]
         ];
 
         return response()->json($response, 200);

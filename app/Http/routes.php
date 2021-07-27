@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 
 Route::group(['middleware' => 'jwt.auth'], function () {
-    Route::post('/test', 'AuthenticateController@test');
+    Route::get('/pokemon/{name}', 'PokemonController@show')->name('getPokemon');
 });
 
 Route::post('/login', 'AuthenticateController@authenticate');
