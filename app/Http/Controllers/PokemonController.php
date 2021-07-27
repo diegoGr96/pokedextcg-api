@@ -52,9 +52,10 @@ class PokemonController extends Controller
         ];
 
         $validator = Validator::make($req, [
-            'page' => 'required|integer',
-            'pageSize' => 'integer',
+            'page' => 'integer|min:1',
+            'pageSize' => 'integer|min:0',
         ]);
+
 
         try {
             if ($validator->fails()) {
