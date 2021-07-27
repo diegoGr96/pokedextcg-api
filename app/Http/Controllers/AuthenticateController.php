@@ -37,7 +37,7 @@ class AuthenticateController extends Controller
 
     public function test(Request $request)
     {
-        return response()->json(['result' => $request->bearerToken()], 200);
+        return response()->json(['result' => $request->get('user')], 200);
     }
 
 
