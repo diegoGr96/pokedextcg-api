@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthenticateController extends Controller
@@ -19,7 +20,27 @@ class AuthenticateController extends Controller
         $credentials = $request->only('email', 'password');
 
         try{
-            $token = JWTAuth::attempt($credentials);
+
+            $passDB = DB::select('select password from users where email = ?', [$credentials['email']]);
+
+            if(count($passDB) === 0){
+                return response()->json(['error' => 'invalid_credentials_email'], 401);
+            }
+
+            if (!Hash::check($credentials['password'], $passDB[0]->password)) {
+                return response()->json(['error' => 'invalid_credentials_password'], 401);
+            }
+
+            $user = DB::select('select id, name, email from users where email = :email limit 1', [
+                'email' => $credentials['email'],
+                ])[0];
+
+
+            $token = JWTAuth::attempt($credentials, [
+                'userName' => $user->name,
+                'userEmail' => $user->email,
+            ]);
+            // $token = JWTAuth::attempt($credentials);
             if(!$token){
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
@@ -29,9 +50,9 @@ class AuthenticateController extends Controller
 
         $response = [
             'token' => $token,
-            'user' => Auth::user(),
-            'user2' => DB::table('users')->select('id', 'name', 'email', 'created_at', 'updated_at')->where('email', $credentials['email'])->take(1)->get()[0],
-            'user3' => DB::select('select id, name, email, created_at, updated_at from users where email = :email limit 1', ['email' => $credentials['email']])[0]
+            // 'user' => Auth::user(),
+            // 'user2' => DB::table('users')->select('id', 'name', 'email', 'created_at', 'updated_at')->where('email', $credentials['email'])->take(1)->get()[0],
+            // 'user3' => DB::select('select id, name, email, created_at, updated_at from users where email = :email limit 1', ['email' => $credentials['email']])[0]
         ];
 
         return response()->json($response, 200);
