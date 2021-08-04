@@ -10,11 +10,19 @@ use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PokemonController extends Controller
 {
     const DEFAULT_PAGE = 1;
     const DEFAULT_PAGE_SIZE = 10;
+
+    private $user;
+
+    public function __construct()
+    {
+        $this->user = JWTAuth::parseToken()->authenticate();
+    }    
 
     /**
      * Display a listing of the resource.
@@ -56,6 +64,8 @@ class PokemonController extends Controller
             'pageSize' => 'integer|min:0',
         ]);
 
+        // var_dump($this->user);die;
+
 
         try {
             if ($validator->fails()) {
@@ -77,14 +87,26 @@ class PokemonController extends Controller
 
                 $resultPokemon = json_decode($response->getBody()->getContents());
 
-                $result = array();
-                foreach ($resultPokemon->data as $pokemon) {
-                    $result[] = [
+                $result = [
+                    'user' => $this->user,
+                    'data' => [],
+                ];
+                
+                $result['data'] = array_map(function($pokemon){
+                    return[
                         'id' => $pokemon->id,
                         'name' => $pokemon->name,
                         'images' => $pokemon->images,
                     ];
-                }
+                }, $resultPokemon->data);
+
+                // foreach ($resultPokemon->data as $pokemon) {
+                //     $result[] = [
+                //         'id' => $pokemon->id,
+                //         'name' => $pokemon->name,
+                //         'images' => $pokemon->images,
+                //     ];
+                // }
 
                 return response()->json($result);
             }

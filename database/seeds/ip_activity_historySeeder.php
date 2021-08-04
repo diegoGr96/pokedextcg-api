@@ -1,0 +1,82 @@
+<?php
+
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+
+class ip_activity_historySeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        DB::table('ip_activity_history')->insert(
+            [
+                [
+                    'ip' => '192.168.1.59',
+                    'countryName' => 'United States',
+                    'countryCode' => 'US',
+                    'regionName' => 'California',
+                    'regionCode' => 'CA',
+                    'cityName' => 'Mountain View',
+                    'zipCode' => '94043',
+                    'latitude' => '37.422',
+                    'longitude' => '-122.084',
+                    'url' => 'http://localhost/pokedextcg/public/login',
+                    'endpoint' => 'login',
+                    'params' => '[]'
+                ],
+                [
+                    'ip' => '192.168.1.600',
+                    'countryName' => 'United States',
+                    'countryCode' => 'US',
+                    'regionName' => 'California',
+                    'regionCode' => 'CA',
+                    'cityName' => 'Mountain View',
+                    'zipCode' => '94043',
+                    'latitude' => '37.422',
+                    'longitude' => '-122.084',
+                    'url' => 'http://localhost/pokedextcg/public/pokemon/charizard',
+                    'endpoint' => 'pokemon/charizard',
+                    'params' => '{"pageSize":"2"}',
+                    \Carbon\Carbon::now(), # new \Datetime()
+                    \Carbon\Carbon::now(),  # new \Datetime()
+                ],
+                [
+                    'ip' => '192.40.100.40',
+                    'countryName' => 'United States',
+                    'countryCode' => 'US',
+                    'regionName' => 'California',
+                    'regionCode' => 'CA',
+                    'cityName' => 'Mountain View',
+                    'zipCode' => '94043',
+                    'latitude' => '37.422',
+                    'longitude' => '-122.084',
+                    'url' => 'http://localhost/pokedextcg/public/pokemon/mewto',
+                    'endpoint' => 'pokemon/mewto',
+                    'params' => '{"pageSize":"20"}',
+                    \Carbon\Carbon::now(), # new \Datetime()
+                    \Carbon\Carbon::now(),  # new \Datetime()
+                ],
+                [
+                    'ip' => '162.140.331.454',
+                    'countryName' => 'United States',
+                    'countryCode' => 'US',
+                    'regionName' => 'California',
+                    'regionCode' => 'CA',
+                    'cityName' => 'Mountain View',
+                    'zipCode' => '94043',
+                    'latitude' => '37.422',
+                    'longitude' => '-122.084',
+                    'url' => 'http://localhost/pokedextcg/public/pokemon/lugia',
+                    'endpoint' => 'pokemon/lugia',
+                    'params' => '{"pageSize":"15"}',
+                    \Carbon\Carbon::now(), # new \Datetime()
+                    \Carbon\Carbon::now(),  # new \Datetime()
+                ],
+            ]
+        );
+    }
+}

@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         Model::unguard();
 
         $this->call(UsersTableSeeder::class);
+        $this->call(ip_activity_historySeeder::class);
 
         Model::reguard();
     }
