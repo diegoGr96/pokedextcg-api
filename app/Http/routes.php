@@ -15,11 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Route::group(['middleware' => 'registerIpActivity'], function () {
+    
+    Route::group(['middleware' => ['jwt.auth', 'registerIpActivity']], function () {
+        Route::get('/pokemon/{name}', 'PokemonController@show')->name('getPokemon');
+    });
 
-Route::group(['middleware' => 'jwt.auth'], function () {
-    Route::get('/pokemon/{name}', 'PokemonController@show')->name('getPokemon');
-});
-
-Route::post('/login', 'AuthenticateController@authenticate');
 
 
+
+    Route::post('/login', 'AuthenticateController@authenticate');
+// });

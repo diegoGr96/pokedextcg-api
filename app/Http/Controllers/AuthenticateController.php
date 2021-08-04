@@ -20,25 +20,24 @@ class AuthenticateController extends Controller
         $credentials = $request->only('email', 'password');
 
         try{
-
-            $passDB = DB::select('select password from users where email = ?', [$credentials['email']]);
-
-            if(count($passDB) === 0){
-                return response()->json(['error' => 'invalid_credentials_email'], 401);
-            }
-
-            if (!Hash::check($credentials['password'], $passDB[0]->password)) {
-                return response()->json(['error' => 'invalid_credentials_password'], 401);
-            }
-
-            $user = DB::select('select id, name, email from users where email = :email limit 1', [
-                'email' => $credentials['email'],
-                ])[0];
+            //Manually login. Not necessary because JWTAuth make it auto.
+            // $passDB = DB::select('select password from users where email = ?', [$credentials['email']]);
+            // if(count($passDB) === 0){
+            //     return response()->json(['error' => 'invalid_credentials_email'], 401);
+            // }
+            // if (!Hash::check($credentials['password'], $passDB[0]->password)) {
+            //     return response()->json(['error' => 'invalid_credentials_password'], 401);
+            // }
+            // $user = DB::select('select id, name, email from users where email = :email limit 1', [
+            //     'email' => $credentials['email'],
+            //     ])[0];
 
 
-            $token = JWTAuth::attempt($credentials, [
-                'userName' => $user->name,
-                'userEmail' => $user->email,
+
+
+            $token = JWTAuth::attempt($credentials, [ //Custom Claims. Not necessary because Token already has the user id on 'sub' claim
+                // 'userName' => $user->name,
+                // 'userEmail' => $credentials['email'],
             ]);
             // $token = JWTAuth::attempt($credentials);
             if(!$token){
@@ -50,7 +49,10 @@ class AuthenticateController extends Controller
 
         $response = [
             'token' => $token,
-            // 'user' => Auth::user(),
+            'user' => [
+                'name' => Auth::user()->name,
+                'email' => Auth::user()->email,
+            ],
             // 'user2' => DB::table('users')->select('id', 'name', 'email', 'created_at', 'updated_at')->where('email', $credentials['email'])->take(1)->get()[0],
             // 'user3' => DB::select('select id, name, email, created_at, updated_at from users where email = :email limit 1', ['email' => $credentials['email']])[0]
         ];
