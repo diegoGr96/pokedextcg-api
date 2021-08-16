@@ -51,20 +51,31 @@ class PokemonController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($name, Request $request)
+    public function show(Request $request, $search, $filter = 'name')
     {
+
+        /**
+         * Query Parameters:
+         *      PokemonTCGAPI Query Parameters
+         *      q => Query search
+         *      page => The number of search page
+         *      pageSize => Size of page
+         *      orderBy => Field by order the result      
+         */
         $req = [
-            'name' => $name,
+            'search' => $search,
+            'filter' => $filter,
             'page' => $request['page'],
             'pageSize' => $request['pageSize'],
         ];
 
         $validator = Validator::make($req, [
+            'search' => 'required',
             'page' => 'integer|min:1',
             'pageSize' => 'integer|min:0',
         ]);
 
-        // var_dump($this->user);die;
+        var_dump($filter);die;
 
 
         try {
@@ -78,7 +89,7 @@ class PokemonController extends Controller
                     'v2/cards',
                     [
                         'query' => [
-                            'q' => 'name:' . $name,
+                            'q' => 'name:' . $search,
                             'page' => ($request->has('page') && $request->get('page') > 0) ? $request->get('page') : self::DEFAULT_PAGE,
                             'pageSize' => ($request->has('pageSize') && $request->get('pageSize') > 0) ? $request->get('pageSize') : self::DEFAULT_PAGE_SIZE,
                         ]

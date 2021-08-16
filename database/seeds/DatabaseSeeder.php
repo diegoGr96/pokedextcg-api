@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UsersTableSeeder::class);
         $this->call(ip_activity_historySeeder::class);
+        $this->call(FiltersTableSeeder::class);
 
         Model::reguard();
     }
