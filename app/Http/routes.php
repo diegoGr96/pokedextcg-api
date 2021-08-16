@@ -18,7 +18,8 @@ Route::get('/', function () {
 // Route::group(['middleware' => 'registerIpActivity'], function () {
     
     Route::group(['middleware' => ['jwt.auth', 'registerIpActivity']], function () {
-        Route::get('/pokemon/{name}', 'PokemonController@show')->name('getPokemon');
+        Route::get('/pokemon/{search}/{filter?}', 'PokemonController@show')->name('getPokemon');
+        Route::get('/filters', 'FiltersController@index')->name('getAllFilters');
     });
 
 

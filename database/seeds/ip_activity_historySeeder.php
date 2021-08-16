@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use \Carbon\Carbon;
 
 class ip_activity_historySeeder extends Seeder
 {
@@ -26,7 +27,9 @@ class ip_activity_historySeeder extends Seeder
                     'longitude' => '-122.084',
                     'url' => 'http://localhost/pokedextcg/public/login',
                     'endpoint' => 'login',
-                    'params' => '[]'
+                    'params' => '[]',
+                    'created_at' => Carbon::now(), # new \Datetime()
+                    'updated_at' => Carbon::now(), # new \Datetime()
                 ],
                 [
                     'ip' => '192.168.1.600',
@@ -41,8 +44,8 @@ class ip_activity_historySeeder extends Seeder
                     'url' => 'http://localhost/pokedextcg/public/pokemon/charizard',
                     'endpoint' => 'pokemon/charizard',
                     'params' => '{"pageSize":"2"}',
-                    \Carbon\Carbon::now(), # new \Datetime()
-                    \Carbon\Carbon::now(),  # new \Datetime()
+                    'created_at' => Carbon::now(), # new \Datetime()
+                    'updated_at' => Carbon::now(), # new \Datetime()
                 ],
                 [
                     'ip' => '192.40.100.40',
@@ -57,8 +60,8 @@ class ip_activity_historySeeder extends Seeder
                     'url' => 'http://localhost/pokedextcg/public/pokemon/mewto',
                     'endpoint' => 'pokemon/mewto',
                     'params' => '{"pageSize":"20"}',
-                    \Carbon\Carbon::now(), # new \Datetime()
-                    \Carbon\Carbon::now(),  # new \Datetime()
+                    'created_at' => Carbon::now(), # new \Datetime()
+                    'updated_at' => Carbon::now(), # new \Datetime()
                 ],
                 [
                     'ip' => '162.140.331.454',
@@ -73,8 +76,8 @@ class ip_activity_historySeeder extends Seeder
                     'url' => 'http://localhost/pokedextcg/public/pokemon/lugia',
                     'endpoint' => 'pokemon/lugia',
                     'params' => '{"pageSize":"15"}',
-                    \Carbon\Carbon::now(), # new \Datetime()
-                    \Carbon\Carbon::now(),  # new \Datetime()
+                    'created_at' => Carbon::now(), # new \Datetime()
+                    'updated_at' => Carbon::now(), # new \Datetime()
                 ],
             ]
         );
