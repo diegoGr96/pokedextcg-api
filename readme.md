@@ -16,3 +16,5 @@ Feel free to download the project and send your feedback!
 
 
 Front end part of this project: https://github.com/diegoGr96/pokedextcg-front
+
+Trello page: https://trello.com/b/sdzwXCzr/pokedextcg-api
