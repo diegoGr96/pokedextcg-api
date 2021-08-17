@@ -52,6 +52,20 @@ class DeckController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $userId
+     * @return \Illuminate\Http\Response
+     */
+    public function showByUser($userId)
+    {
+        /* 
+            GET:cards --> q=id:xy1-1 OR id:xy1-2 OR id:xy1-3 OR ... 
+        */
+        // CODE HERE...
+    }
+
+    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
