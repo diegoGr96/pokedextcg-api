@@ -8,13 +8,13 @@
 </p>
 
 # pokedextcg-back
-Backend of my personal project about a SPA Pokedex using both the Official Pokemon TCG API, my own Restful API made with PHP and Laravel and a Frontend project made with ReactJS.
+Restful API of my personal project about a SPA Pokemon TCG using both a Pokemon TCG API (https://pokemontcg.io/), my own Restful API made with PHP and Laravel and a Frontend project made with ReactJS + Typescript.
 
-This is made with the purpose of improving myself and practice with technologies like PHP, Laravel, etc.
+This is made with the purpose of improving myself and practice with technologies like PHP, Laravel and more...
 
 Feel free to download the project and send your feedback!
 
 
-Front end part of this project: https://github.com/diegoGr96/pokedextcg-front
+SPA of this project: https://github.com/diegoGr96/pokedextcg-app
 
 Trello page: https://trello.com/b/sdzwXCzr/pokedextcg-api
